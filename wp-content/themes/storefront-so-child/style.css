@@ -1,0 +1,41 @@
+/*
+ Theme Name:   Storefront SO Child
+ Theme URI:    http://siteoptimus.com/storefront-so-child/
+ Description:  My first child theme, based on Storefront
+ Author:       Alex Destino
+ Author URI:   http://alexdestino.com
+ Template:     storefront
+ Version:      1.0.0
+ Tags:         black, green, white, light, dark, two-columns, three-columns, left-sidebar, right-sidebar, fixed-layout, responsive-layout, custom-background, custom-header, custom-menu, editor-style, featured-images, flexible-header, full-width-template, microformats, post-formats, rtl-language-support, sticky-post, theme-options, translation-ready, accessibility-ready, responsive-layout, infinite-scroll, post-slider, design, food, journal, magazine, news, photography, portfolio, clean, contemporary, dark, elegant, modern, professional, sophisticated
+ Text Domain:  storefront-so-child
+*/
+
+/*
+.nav-text {
+    vertical-align:middle;
+}
+*/
+
+
+.menu-primary li a:before {
+	font-family: FontAwesome;
+	padding-right: 7px;
+	/*font-style: normal;
+	font-weight: normal;
+	text-decoration: inherit;*/
+}
+
+/* Home menu item */
+#menu-item-1616 a:before {
+	content: "\f015";
+}
+
+/* Pages menu item */
+#menu-item-1413 a:before {
+	content: "\f0e8";
+}
+
+/* Categories menu item */
+#menu-item-1414 a:before {
+	content: "\f15b";
+}

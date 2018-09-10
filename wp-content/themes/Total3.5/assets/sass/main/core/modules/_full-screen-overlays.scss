@@ -1,0 +1,76 @@
+/*------------------------------------------------------------------
+[Full-Screen Overlays]
+-------------------------------------------------------------------*/
+.wpex-fs-overlay {
+	position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 9999;
+    visibility: hidden;
+    opacity: 0;
+    background: #000;
+    background: rgba( 0, 0, 0, 0.92 );
+    transform: translateZ(0);
+    @include transition( all .25s ease-in-out );
+
+    &.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+	.wpex-inner {
+        position: relative;
+        top: 50%;
+        display: block;
+        position: relative;
+        width: 700px;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0 30px;
+        &.wpex-scale {
+            transform: scale(.85) translateY(-50%);
+            @include transition( all .25s ease-in-out );
+        }
+    }
+
+    &.active .wpex-inner.wpex-scale {
+        transform: scale(1) translateY(-50%);
+    }
+
+    .wpex-close {
+        width: 35px;
+        height: 35px;
+        position: absolute;
+        right: 1.2em;
+        top: 1.2em;
+        overflow: hidden;
+        text-indent: 100%;
+        cursor: pointer;
+        &::after,
+        &::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            top: 0;
+            left: 50%;
+            border-radius: 3px;
+            background: rgba(255,255,255,.45);
+            transition: all 0.15s;
+            @include transform ( rotate(45deg) );
+        }
+        &::before {
+            @include transform ( rotate(-45deg) );
+        }
+        &:hover {
+            &::after,
+            &::before {
+               background: rgba(255,255,255,1);
+            }
+        }
+    }
+
+
+}

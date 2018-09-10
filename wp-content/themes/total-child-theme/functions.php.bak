@@ -1,0 +1,289 @@
+<?php
+/**
+ * Child theme functions
+ *
+ * When using a child theme (see http://codex.wordpress.org/Theme_Development
+ * and http://codex.wordpress.org/Child_Themes), you can override certain
+ * functions (those wrapped in a function_exists() call) by defining them first
+ * in your child theme's functions.php file. The child theme's functions.php
+ * file is included before the parent theme's file, so the child theme
+ * functions would be used.
+ *
+ * Text Domain: wpex
+ * @link http://codex.wordpress.org/Plugin_API
+ *
+ */
+
+/**
+ * Load the parent style.css file
+ */
+function total_child_enqueue_parent_theme_style() {
+    wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css' );
+}
+add_action( 'wp_enqueue_scripts', 'total_child_enqueue_parent_theme_style' );
+
+
+/* Load highcharts */
+function js_custom(){
+
+    //if ( is_page('test-boxplot')){  
+    if ( ( is_page('test-boxplot') || is_page('opportunity-details')|| is_page('test-box-2') ) ) {  
+
+	// Register and Enqueue a Script
+    	// get_stylesheet_directory_uri will look up child theme location
+    	wp_enqueue_script( 'ajax', 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' );
+    	wp_enqueue_script( 'highcharts', 'https://code.highcharts.com/highcharts.js' );
+    	wp_enqueue_script( 'highcharts-more', 'https://code.highcharts.com/highcharts-more.js' );
+    	wp_enqueue_script( 'highcharts-export', 'https://code.highcharts.com/modules/exporting.js' );
+    }
+}	
+
+add_action('wp_enqueue_scripts', 'js_custom');
+
+
+
+/* Take user directly to checkout bypassing cart */
+add_filter ('add_to_cart_redirect', 'redirect_to_checkout');
+
+function redirect_to_checkout() {
+    return WC()->cart->get_checkout_url();
+}
+
+
+add_action( 'gform_after_submission_5', 'so_add_entry_to_db', 10, 2 );
+function so_add_entry_to_db($entry, $form) {
+
+	//uncomment to see the entry object 
+	echo '<pre>';
+	var_dump($entry);
+	echo '</pre>';
+
+	$source = $entry['source_url'];
+
+	$goal = 	$entry[5];
+	$acct = 	$entry[1];
+	$stdate = 	$entry[3];
+	$enddate = 	$entry[4];
+	$whichdim = 	$entry[2];
+
+
+        global $wpdb;
+
+        // add form data to custom database table
+        $wpdb->insert(
+              'tbl_code_run_log',
+              array(
+                    'typeid' => 1,
+                    'source' => $source,
+                    'goal' => $goal,
+                    'dim' => $whichdim,
+                    'acct' => $acct,
+                    'stdate' => $stdate,
+                    'enddate' => $enddate,
+                    'DateTime' => current_time( 'mysql' )
+               )
+         );
+
+}
+
+
+/*Site Optimus functions from development*/
+
+function checkdefault($dimrow)
+{
+    global $dim;
+    if ($dimrow == $dim){
+            $result = "selected";
+    }
+            else
+    {
+            //return '';
+            $result = "";
+
+    }
+    return $result;
+}
+
+function checkdefaultprofile($profileid)
+{
+    global $acct;
+    if ($profileid == $acct){
+            $result = "selected";
+    }
+            else
+    {
+            //return '';
+            $result = "";
+
+    }
+    return $result;
+}
+
+function checkdefaultgoal($goalrow)
+{
+    global $goal;
+    if ($goalrow == $goal){
+            $result = "checked";
+    }
+            else
+    {
+            //return '';
+            $result = "";
+
+    }
+    return $result;
+}
+
+function checkdefaultdenset($densetrow)
+{
+    global $denset;
+    if ($densetrow == $denset){
+            $result = "checked";
+    }
+            else
+    {
+            //return '';
+            $result = "";
+
+    }
+    return $result;
+}
+
+function getfilter($var){
+	$filter_a = array();
+        if (isset($_SESSION[$var])){
+                    return $_SESSION[$var];
+                    $filter_a = unserialize($_SESSION['filter']);
+        }
+        else
+        {
+                if (isset($_COOKIE[$var])){
+                        $var = $_COOKIE[$var];
+                        if($var='filter'){
+                        $filter_a = unserialize($_COOKIE['filter']);
+                        }
+                }
+                else {
+                        $var = ""; //need to change
+                        //$acct = $_POST["selectAcct"];
+                }
+                
+        }
+    
+}
+
+function so_getvar($var)
+{
+
+    if(!isset($var))
+    {
+            
+        if (isset($_SESSION[$var])){
+                    $var = $_SESSION[$var];
+        }
+        else
+        {
+                if (isset($_COOKIE[$var])){
+                        $var = $_COOKIE[$var];
+                }
+                else {
+                        $var = ""; //need to change
+                        //$acct = $_POST["selectAcct"];
+                }
+                
+        }
+    }
+    return $var;
+}
+
+function so_setvar($var)
+{
+	if($var='filter'){
+		$filter_a = array();
+	}
+    if(!isset($var))
+    {
+            
+        if (isset($_SESSION[$var])){
+                    $acct = $_SESSION[$var];
+                    if($var='filter'){
+                    	$filter_a = unserialize($_SESSION['filter']); 
+                    }
+        }
+        else
+        {
+                if (isset($_COOKIE[$var])){
+                        $acct = $_COOKIE[$var];
+                        if($var='filter'){
+                        	$filter_a = unserialize($_COOKIE['filter']);
+                        }
+                }
+                else {
+                        $acct = ""; //need to change
+                        //$acct = $_POST["selectAcct"];
+                }
+                
+        }
+    }
+}
+
+/*Query denset*/
+function runstdset($filter)
+{
+
+	global $wpdb;
+        
+        $startdatetime =  time();
+        $currdatetime = date("Y-m-d H:i:s", $startdatetime);
+
+        //need to modify filter so that it keeps adding filters
+        //need to hide additional submit area
+        global $acct;
+        $acct=so_getvar($acct);
+
+        global $dim;
+        $dim=so_getvar($dim);
+        echo $dim;
+        
+        global $whichdim;
+        $whichdim=so_getvar($whichdim);
+        echo $whichdim;
+        
+        global $goal;
+        $goal = so_getvar($goal);
+
+        global $startdt;
+        $startdt = so_getvar($startdt);
+        global $enddt;
+        $enddt = so_getvar($enddt);
+
+        global $denset;
+        $gapidenset = "get" . $denset;
+        global $gapigoal;
+        $gapigoal = "get" . $goal;
+
+        //$startdt = "2011-01-01";
+        //$enddt = "2011-05-30";
+
+        define('ga_profile_id',$acct);
+
+        global $ga;
+        $ga->requestReportData(ga_profile_id,array($dim),array($denset,$goal),'-' . $goal,$filter,$startdt,$enddt);
+        $middatetime =  time();
+
+
+	$query = 'truncate tbl_dim_den_num';
+
+	$wpdb->query($query);
+        //mysqli_query($Algo,"truncate tbl_dim_den_num");
+
+        foreach($ga->getResults() as $result){
+                $wpdb->query("insert into tbl_dim_den_num(whichdim,dim,den,num) VALUES ('" . $whichdim. "','" . $result. "','" . $result->$gapidenset() . "','" . $result->$gapigoal() . "')");
+        }
+
+        $enddatetime = time();
+        $midduration = $middatetime - $startdatetime;
+        $duration = $enddatetime - $startdatetime;
+        //mysqli_query($Algo,"insert into tbl_code_run_log(typeid,DateTime,goal,dim,acct,filter,midduration,duration) VALUES ('2','" . $currdatetime . "','" . $goal . "','" . $dim . "','" . $acct . "','" . $filter."','" . $midduration ."','" . $duration . "')");
+        return true;
+}

@@ -1,0 +1,44 @@
+body {
+  font-family: sans-serif;
+  font-size: 12px;
+  color: #666666;
+}
+
+text {
+  font-family: sans-serif;
+  font-size: 12px;
+}
+
+.breadcrumb .is-active {
+  color: #88c3c5;
+}
+
+.node {
+  cursor: pointer;
+}
+
+.node-circle {
+  fill: #88c3c5;
+}
+
+.node-circle.other {
+  fill: #9ec38c;
+}
+
+.node-label {
+  pointer-events: none;
+}
+
+.link {
+  stroke: #ccc;
+  fill: none;
+}
+
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+}
+
+.tooltip table {
+  background: rgb(245, 245, 245, 0.8);
+}

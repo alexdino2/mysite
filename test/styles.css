@@ -1,0 +1,51 @@
+body {
+	font-size: 12px;
+	font-family: sans-serif;
+}
+
+.chart-container {
+	overflow: auto;
+}
+
+svg {
+	display: block;
+}
+
+.link {
+	fill: none;
+	stroke: #3498db;
+	stroke-linecap: round;
+}
+
+circle {
+	fill: #3498db;
+	stroke-width: 1.5;
+}
+
+.high circle {
+	fill: #e74c3c;
+}
+
+.med circle {
+	fill: #f39c12;
+}
+
+.low circle {
+	fill: #2ecc71;
+}
+
+.info {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	pointer-events: none;
+}
+
+.info .value {
+	font-weight: bold;
+	font-size: 1.5em;
+	padding: 4px;
+}

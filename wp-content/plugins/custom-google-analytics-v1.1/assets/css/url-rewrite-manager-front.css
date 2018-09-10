@@ -1,0 +1,55 @@
+.account_form {float:left;}
+
+
+.filters {
+  position: relative;
+  text-align: right;
+}
+
+
+.filterBlock {
+  background-color: #f7f7f7;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 5px 5px;
+  position: absolute;
+  right: 0;
+  width: 347px;
+  z-index: 999;
+  padding:10px;
+  top:50px;
+}
+
+
+.filterBlock input {
+  margin-bottom: 10px;
+}
+
+
+.filters > span {
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  float: right;
+  padding: 10px;
+}
+
+.dataTables_filter label input {
+  background: #fff none repeat scroll 0 0;
+  width: 82%;
+}
+
+#gaSiteMetaData_filter > label {
+  float: right;
+  font-size: 13px;
+  overflow: hidden;
+  padding: 7px 0;
+}
+.filterBlock{ display: none; }
+.filters span{ cursor: pointer; }
+
+
+.account_form > select {
+  background: #fff none repeat scroll 0 0;
+  border: 1px solid #ddd;
+  margin: 0 10px;
+  padding: 10px 0;
+}
